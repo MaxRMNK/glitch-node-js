@@ -83,15 +83,12 @@ fastify.get("/ap", function (request, reply) {
 fastify.post("/", function (req, res) {
   // Входящая команда добавить или убавить "очки здоровья"
   const { change } = req.body;
-  // console.log('Пришел запрос req.body: ', change);
 
   // Получение из БД записанного значения HP
   fs.readFile(dataPath, {encoding: 'utf8'}, (err, data) => {
     if(err) { return console.log(err) }
 
     const { hitPoints } = JSON.parse(data);
-    // console.log('Получено points dataPath (post): ', hitPoints);
-
     let newHitPoints = 0;
 
     if (change === 'add') {
@@ -99,13 +96,10 @@ fastify.post("/", function (req, res) {
     } else if (change === 'remove' && hitPoints >= 10) {
       newHitPoints = hitPoints - 10;
     }
-    // console.log('newHitPoints:', newHitPoints);
 
     // Запись в БД нового значения HP
     fs.writeFile(dataPath, JSON.stringify({ hitPoints: newHitPoints }), (err) => {
       if (err) console.log(err);
-      // console.log('Записано newHitPoints: ', newHitPoints);
-
       const params = { hitPoints: newHitPoints };
 
       res.status(200).send( params );

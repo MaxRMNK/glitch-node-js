@@ -7,7 +7,49 @@ const buttonRemove = document.getElementById("button__hp-remove");
 buttonAdd.addEventListener("click", function () { setHitPoints('add') });
 buttonRemove.addEventListener("click", function () { setHitPoints('remove') });
 
+function editHitPoints() {
+  const dataHitPoints = localStorage.getItem('dataHitPoints');
 
+  if (dataHitPoints) {
+    const data = JSON.parse(dataHitPoints);
+
+    if(Number.isInteger(data.hitPoints)) {
+      hitPointsValue.textContent = data.hitPoints;
+      return
+    }
+  }
+
+  hitPointsValue.textContent = 10;
+  localStorage.setItem('dataHitPoints', JSON.stringify({ hitPoints: 10 }) );
+}
+editHitPoints();
+
+
+function setHitPoints(change) {
+  const dataHitPoints = localStorage.getItem('dataHitPoints');
+
+  let newHitPoints = 0;
+
+  if (dataHitPoints) {
+    const data = JSON.parse(dataHitPoints);
+
+    if(Number.isInteger(data.hitPoints)) {
+      
+      if (change === 'add') {
+        newHitPoints = data.hitPoints + 10;
+      } else if (change === 'remove' && data.hitPoints >= 10) {
+        newHitPoints = data.hitPoints - 10;
+      }
+    }
+  }
+
+  localStorage.setItem('dataHitPoints', JSON.stringify({ hitPoints: newHitPoints }) );
+  hitPointsValue.textContent = newHitPoints;
+}
+
+
+
+/*
 function setHitPoints(change) {
   console.log('setHitPoints points: ', change);
   
@@ -46,3 +88,4 @@ function setHitPoints(change) {
       buttonRemove.removeAttribute("disabled");
     });
 }
+*/

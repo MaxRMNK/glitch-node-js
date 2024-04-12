@@ -13,6 +13,8 @@ const fastify = require("fastify")({
   logger: false,
 });
 
+// ADD FAVORITES ARRAY VARIABLE FROM TODO HERE
+
 // Setup our static files
 fastify.register(require("@fastify/static"), {
   root: path.join(__dirname, "public"),
@@ -20,7 +22,7 @@ fastify.register(require("@fastify/static"), {
 });
 
 // Formbody lets us parse incoming forms
-// fastify.register(require("@fastify/formbody"));
+fastify.register(require("@fastify/formbody"));
 
 // View is a templating manager for fastify
 fastify.register(require("@fastify/view"), {
@@ -79,33 +81,55 @@ fastify.get("/ap", function (request, reply) {
  *
  * Accepts body data indicating the user choice
  */
-// Вариант 1: Хранение данных о HP в фале JSON
-fastify.post("/", function (req, res) {
-  // Входящая команда добавить или убавить "очки здоровья"
-  const { change } = req.body;
+// // Вариант 2: Хранение данных о HP в localStorage
+// fastify.post("/", function (req, res) {
+//   // Входящая команда добавить или убавить "очки здоровья"
+//   const { change } = req.body;
 
-  // Получение из БД записанного значения HP
-  fs.readFile(dataPath, {encoding: 'utf8'}, (err, data) => {
-    if(err) { return console.log(err) }
+//   // Получение из БД записанного значения HP
+//   fs.readFile(dataPath, {encoding: 'utf8'}, (err, data) => {
+//     if(err) { return console.log(err) }
 
-    const { hitPoints } = JSON.parse(data);
-    let newHitPoints = 0;
+//     const { hitPoints } = JSON.parse(data);
 
-    if (change === 'add') {
-      newHitPoints = hitPoints + 10;
-    } else if (change === 'remove' && hitPoints >= 10) {
-      newHitPoints = hitPoints - 10;
-    }
+//     let newHitPoints = 0;
 
-    // Запись в БД нового значения HP
-    fs.writeFile(dataPath, JSON.stringify({ hitPoints: newHitPoints }), (err) => {
-      if (err) console.log(err);
-      const params = { hitPoints: newHitPoints };
+//     if (change === 'add') {
+//       newHitPoints = hitPoints + 10;
+//     } else if (change === 'remove' && hitPoints >= 10) {
+//       newHitPoints = hitPoints - 10;
+//     }
+    
+//     // Запись в БД нового значения HP
+//     fs.writeFile(dataPath, JSON.stringify({ hitPoints: newHitPoints }), (err) => {
+//       if (err) console.log(err);
 
-      res.status(200).send( params );
-    });
-  });
-});
+//       const params = { hitPoints: newHitPoints };
+
+//       // Ответ
+//       res.status(200).send( params );
+//     });
+//   });
+// }); // Не работало из-за того что "потерял" эти скобки.
+
+
+//------------
+// // Вариант 0: Обработчик данных отправленных через форму
+// fastify.post("/", function (request, reply) {
+//   const hitPoints = request.body;
+
+//   console.log('Пришел запрос request.body', hitPoints);
+
+//   const add = request.body.add;
+//   const remove = request.body.remove;
+
+//   params = {
+//     hitPoints: 20,
+//   };
+
+//   return reply.view("/src/pages/index.hbs", params);
+// });
+//------------
 
 
 // Run the server and report out to the logs

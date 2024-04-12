@@ -15,8 +15,8 @@ to this section's matching END comment to see page-specific styles.
   --color-primary: #7581bc;
   --color-header: #d45d5d;
   --color-button: #f997a2;
-  --color-button-hover: #ccc;
-  --wrapper-height: 87vh;
+  --color-button-hover: #dd7c7c;
+  --wrapper-height: 100vh;
   --image-max-width: 300px;
   --image-margin: 3rem;
   --font-family: "Roboto", sans-serif;
@@ -38,6 +38,7 @@ END Glitch hello-app default styles
 body {
   font-family: var(--font-family);
   background-color: var(--color-bg);
+  margin: 0;
 }
 
 /* Page structure */
@@ -89,7 +90,7 @@ body {
 }
 .button:hover {
   background: var(--color-button-hover);
-  border-color: #999;
+  border-color: #414141;
   /* opacity: 0.6; */
 }
 
